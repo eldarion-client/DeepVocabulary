@@ -50,20 +50,30 @@ class BaseSubscription(models.Model):
 
 
 class ReadingList(AuditedModel, BaseList):
-    pass
+    class Meta:
+        verbose_name = "reading list"
 
 
 class VocabularyList(AuditedModel, BaseList):
-    pass
+    class Meta:
+        verbose_name = "vocabulary list"
 
 
 class ReadingListEntry(AuditedModel, BaseListEntry):
     resource_list = models.ForeignKey("lists.ReadingList", related_name="entries")
-    cts_urn = models.CharField(max_length=250, unique=True)
+    cts_urn = models.CharField(max_length=250)
+
+    class Meta:
+        verbose_name = "reading list entry"
+        verbose_name_plural = "reading list entries"
 
 
 class VocabularyListEntry(AuditedModel, BaseListEntry):
     resource_list = models.ForeignKey("lists.VocabularyList", related_name="entries")
+
+    class Meta:
+        verbose_name = "vocabulary list entry"
+        verbose_name_plural = "vocabulary list entries"
 
 
 class ReadingListSubscription(AuditedModel, BaseSubscription):
@@ -71,8 +81,16 @@ class ReadingListSubscription(AuditedModel, BaseSubscription):
         "lists.ReadingList", related_name="subscriptions"
     )
 
+    class Meta:
+        verbose_name = "reading list subscription"
+        verbose_name_plural = "reading list subscriptions"
+
 
 class VocabularyListSubscription(AuditedModel, BaseSubscription):
     resource_list = models.ForeignKey(
         "lists.VocabularyList", related_name="subscriptions"
     )
+
+    class Meta:
+        verbose_name = "vocabulary list subscription"
+        verbose_name_plural = "vocabulary list subscriptions"
