@@ -22,9 +22,7 @@ class BaseList(models.Model):
     cloned_from = models.ForeignKey("self", null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
-    secret_key = models.UUIDField(editable=False, default=uuid.uuid4)
-
-    unique_together = ("title", "secret_key",)
+    secret_key = models.UUIDField(editable=False, default=uuid.uuid4, unique=True)
 
     class Meta:
         abstract = True
