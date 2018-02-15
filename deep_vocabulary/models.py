@@ -6,8 +6,13 @@ from django.db import connection, models
 from .db.fields import ArrayField
 from .greeklit import TEXT_GROUPS, WORKS
 from .querysets import PassageLemmaQuerySet
-from .utils import (chunker, natural_sort_key, pg_array_format, sort_key,
-                    strip_accents)
+from .utils import (
+    chunker,
+    natural_sort_key,
+    pg_array_format,
+    sort_key,
+    strip_accents
+)
 
 
 class Lemma(models.Model):
