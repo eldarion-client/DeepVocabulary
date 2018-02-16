@@ -19,13 +19,18 @@ class BaseList(models.Model):
         blank=True,
         on_delete=models.CASCADE
     )
-    cloned_from = models.ForeignKey("self", null=True, on_delete=models.SET_NULL)
+    cloned_from = models.ForeignKey(
+        "self", null=True, editable=False, on_delete=models.SET_NULL
+    )
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     secret_key = models.UUIDField(editable=False, default=uuid.uuid4, unique=True)
 
     class Meta:
         abstract = True
+
+    def __str__(self):
+        return f"{self.title} - {self.secret_key}"
 
 
 class BaseListEntry(models.Model):
@@ -58,16 +63,23 @@ class VocabularyList(AuditedModel, BaseList):
 
 
 class ReadingListEntry(AuditedModel, BaseListEntry):
-    resource_list = models.ForeignKey("lists.ReadingList", related_name="entries")
     cts_urn = models.CharField(max_length=250)
+    resource_list = models.ForeignKey(
+        "resource_lists.ReadingList", related_name="entries"
+    )
 
     class Meta:
         verbose_name = "reading list entry"
         verbose_name_plural = "reading list entries"
 
+    def __str__(self):
+        return self.cts_urn
+
 
 class VocabularyListEntry(AuditedModel, BaseListEntry):
-    resource_list = models.ForeignKey("lists.VocabularyList", related_name="entries")
+    resource_list = models.ForeignKey(
+        "resource_lists.VocabularyList", related_name="entries"
+    )
 
     class Meta:
         verbose_name = "vocabulary list entry"
@@ -76,7 +88,7 @@ class VocabularyListEntry(AuditedModel, BaseListEntry):
 
 class ReadingListSubscription(AuditedModel, BaseSubscription):
     resource_list = models.ForeignKey(
-        "lists.ReadingList", related_name="subscriptions"
+        "resource_lists.ReadingList", related_name="subscriptions"
     )
 
     class Meta:
@@ -86,7 +98,7 @@ class ReadingListSubscription(AuditedModel, BaseSubscription):
 
 class VocabularyListSubscription(AuditedModel, BaseSubscription):
     resource_list = models.ForeignKey(
-        "lists.VocabularyList", related_name="subscriptions"
+        "resource_lists.VocabularyList", related_name="subscriptions"
     )
 
     class Meta:
