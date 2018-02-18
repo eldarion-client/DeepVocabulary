@@ -22,6 +22,7 @@ urlpatterns = [
 
     url(r"^rr/(?P<cts_urn>[^/]+)/$", reader_redirect, name="reader_redirect"),
 
+    url(r"^resource-lists/", include("deep_vocabulary.resource_lists.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
