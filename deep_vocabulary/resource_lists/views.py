@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
@@ -6,6 +7,11 @@ from . import models
 
 class BaseListsView(ListView):
     context_object_name = "resource_lists"
+
+    def get_queryset(self):
+        return super().get_queryset().filter(
+            Q(owner=self.request.user.pk) | Q(owner__isnull=True)
+        )
 
 
 class ReadingListsView(BaseListsView):
